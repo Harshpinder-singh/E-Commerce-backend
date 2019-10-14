@@ -13,16 +13,16 @@ const { authorizeUser } = require('../app/middlewares/authorizeUser')
 router.post('/register', userController.register)
 router.post('/login', userController.login)
 router.get('/account', authenticateUser, userController.account)
-router.get('/test', authenticateUser, authorizeUser, userController.account)
+router.delete('/logout', authenticateUser, userController.logout)
 
 //categories
 router.get('/categories', authenticateUser, categoriesController.list)
 router.post('/categories', authenticateUser, categoriesController.create)
 
 //products
-router.get('/products', authenticateUser, productsController.list)
+router.get('/products', productsController.list)
 router.post('/products', authenticateUser, authorizeUser, productsController.create)
-router.get('/products/:id', authenticateUser, productsController.show)
+router.get('/products/:id', productsController.show)
 
 //cart
 router.get('/cart', authenticateUser, cartController.show)

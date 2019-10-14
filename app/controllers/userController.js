@@ -16,7 +16,7 @@ module.exports.register = (req, res) => {
 module.exports.account = (req, res) => {
     const user = req.user
     const token = req.token
-    res.send('profile here')
+    res.json({ _id: req.user._id, email: req.user.email, role: req.user.role })
 }
 
 module.exports.login = (req, res) => {
@@ -29,6 +29,18 @@ module.exports.login = (req, res) => {
         .then((user) => {
 
             res.json(user)
+        })
+        .catch((err) => {
+            res.json(err)
+        })
+}
+
+//logout 
+module.exports.logout = function (req, res) {
+    const { user, token } = req
+    User.findByIdAndUpdate(user._id, { $pull: { tokens: { token: token } } })
+        .then(() => {
+            res.json({ notice: 'successfully logged out' })
         })
         .catch((err) => {
             res.json(err)
